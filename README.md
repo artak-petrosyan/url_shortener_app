@@ -1,15 +1,16 @@
+![alt text](https://github.com/artak-petrosyan/url_shortener_app/blob/main/url_shortener_frontend/public/logo_small.png?raw=true)
 # URL Shortener Application
 
 This project is a full-stack URL shortener application built with a **NestJS** backend, **PostgreSQL** database, and a **Next.js** frontend. Both the backend and frontend are written in **TypeScript**.
 
 ## Table of Contents
 
-  * [Features]
-  * [Technologies Used]
-  * [Getting Started]
-  * [Usage]
-  * [API Endpoints (Backend)]
-  * [Database Schema]
+  * [Features](#features)
+  * [Technologies Used](#technologies-used)
+  * [Getting Started](#getting-started)
+  * [Usage](#usage)
+  * [API Endpoints (Backend)](#api-endpoints-backend)
+  * [Database Schema](#database-schema)
 
 ## Features
 

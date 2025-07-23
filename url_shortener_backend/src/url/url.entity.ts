@@ -17,7 +17,7 @@ export class UrlEntity extends BaseEntity {
   @Index()
   original: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   @Index({ unique: true })
   short: string;
 

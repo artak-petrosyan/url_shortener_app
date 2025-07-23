@@ -152,7 +152,7 @@ The PostgreSQL database will contain:
 | :---------- | :-------- | :---------- | :----------------------- |
 | `id`        | INTEGER      | PRIMARY KEY | Unique identifier        |
 | `original`  | CHARACTER VARYING      | UNIQUE, NOT NULL, INDEX   | The original long URL    |
-| `short`| CHARACTER VARYING      | UNIQUE, NOT NULL, INDEX   | The generated short code |
+| `short`| VARCHAR(255)      | UNIQUE, NOT NULL, INDEX   | The generated short code |
 | `createdAt`| TIMESTAMP | DEFAULT NOW() | Timestamp of creation |
 | `createdAt`| TIMESTAMP | DEFAULT NOW() | Timestamp of update |
 

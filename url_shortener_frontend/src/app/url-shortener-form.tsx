@@ -109,7 +109,7 @@ export default function UrlShortenForm() {
                     <ol>
                         <div className="inline-flex items-center gap-5">
                             <p className='text-[#2183ca] font-bold'>Short URL:</p>
-                            <p className='text-[#f4a427]'>{responseData!.shortUrl}</p>
+                            <p className='text-[#f4a427]'><a href={responseData!.shortUrl} target="_blank">{responseData!.shortUrl}</a></p>
                             <CopyToClipboardButton textToCopy={responseData!.shortUrl} />
                         </div>
                     </ol>

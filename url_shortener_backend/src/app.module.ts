@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configurations } from './config/configurations';
 import { UrlModule } from './url/url.module';
 import { validate } from './config/validation';
-import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from './url/url.entity';
 
@@ -30,7 +29,6 @@ import { UrlEntity } from './url/url.entity';
       inject: [ConfigService],
     }),
     UrlModule,
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

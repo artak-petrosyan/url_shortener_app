@@ -1,0 +1,47 @@
+services:
+  url-shortener-backend:
+    hostname: ${APP_PREFIX}_backend
+    build: ./${APP_PREFIX}_backend
+    image: ${APP_PREFIX}_backend:${IMAGE_TAG}
+    ports:
+      - '${BACKEND_PORT}:${BACKEND_APP_PORT}' # Map NestJS port to host
+    depends_on:
+      - postgres-db
+    environment:
+      APP_PORT: ${BACKEND_APP_PORT}
+      APP_NAME: 'Url Shortener'
+      BASE_URL: 'http://localhost:${BACKEND_PORT}'
+      DB_TYPE: postgres
+      DB_HOST: ${POSTGRES_HOST}
+      DB_PORT: ${POSTGRES_PORT}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      DB_SYNC: true
+
+  url-shortener-frontend:
+    hostname: ${APP_PREFIX}_frontend
+    build: ./${APP_PREFIX}_frontend
+    image: '${APP_PREFIX}_frontend:${IMAGE_TAG}'
+    ports:
+      - '${FRONTEND_PORT}:${FRONTEND_APP_PORT}' # Map Next.js port to host
+    depends_on:
+      - url-shortener-backend
+    environment:
+      BACKEND_HOST: 'http://${APP_PREFIX}_backend:${BACKEND_APP_PORT}'
+
+  postgres-db:
+    image: postgres:17-alpine
+    hostname: ${POSTGRES_HOST}
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}' 
+    environment:
+      PGPORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

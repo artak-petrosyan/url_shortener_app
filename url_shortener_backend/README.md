@@ -77,12 +77,12 @@ Before you begin, ensure you have the following installed:
     Mandatory environment variables:
 
     ```env
-    BASE_URL
+    BASE_URL:
     DB_HOST:
-    DB_PORT
-    DB_USER
-    DB_PASSWORD
-    DB_NAME
+    DB_PORT:
+    DB_USER:
+    DB_PASSWORD:
+    DB_NAME:
     ```
 
 4.  **Create the PostgreSQL database:**

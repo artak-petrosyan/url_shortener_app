@@ -39,20 +39,20 @@ This project is a full-stack URL shortener application built with a **NestJS** b
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-## Docker Compose
+### Docker Compose
 
 Docker Compose allows you to run the entire application stack (backend, frontend, and database) with a single command.
 
-### Prerequisites
+#### Prerequisites
 
   * **Docker Desktop:** [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/) (Includes Docker Engine and Docker Compose)
 
-### Setup
+#### Setup
 
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/url_shortener_app.git
+    git clone https://github.com/artak-petrosyan/url_shortener_app.git
     cd url_shortener_app
     ```
 
@@ -60,16 +60,20 @@ Docker Compose allows you to run the entire application stack (backend, frontend
 
         ```env
         # .env
-        PORT=3000
-        DB_HOST=db # Important: Use the service name 'db'
-        DB_PORT=5432
-        DB_USERNAME=your_username
-        DB_PASSWORD=your_password
-        DB_DATABASE=url_shortener_db
-        BASE_URL="http://localhost:3001"
+        IMAGE_TAG=latest
+        APP_PREFIX=url_shortener
+        POSTGRES_HOST=posthgres_db
+        POSTGRES_DB=shorturl_db
+        POSTGRES_PORT=5437
+        POSTGRES_USER=postgres
+        POSTGRES_PASSWORD=postgres
+        BACKEND_PORT=3009
+        BACKEND_APP_PORT=3000
+        FRONTEND_PORT=3017
+        FRONTEND_APP_PORT=3000
         ```
 
-### Build and Run
+#### Build and Run
 
 1.  **Navigate to the root directory** of the project in your terminal (`url-shortener/`).
 
@@ -86,14 +90,16 @@ Docker Compose allows you to run the entire application stack (backend, frontend
       * Link the containers and expose the necessary ports.
 
 
-### Accessing Services
+#### Accessing Services
 
 Once all services are running:
 
-  * **Frontend:** Access the application in your browser at `http://localhost:3001`.
-  * **Backend API:** The backend API will be accessible at `http://localhost:3000`.
+  * **Frontend:** Access the application in your browser at `http://localhost:3017`.
+  * **Backend API:** The backend API will be accessible at `http://localhost:3009`.
 
-### Stopping Services
+  **Note:** Make sure to replace the port if it has changed in the `.env` file (`FRONTEND_PORT`, `BACKEND_PORT` accordingly).
+
+#### Stopping Services
 
 To stop all running services and remove their containers, networks, and volumes:
 
@@ -114,16 +120,20 @@ The backend provides the following RESTful API endpoints:
       * **Request Body:**
         ```json
         {
-            "longUrl": "https://example.com/very/long/url",
-            "customCode": "my-short-code" // Optional
+            "onoriginalUrlgUrl": "https://example.com/very/long/url",
         }
+        ```
+        ```cURL
+        curl --location 'localhost:3005/shorten' \
+        --header 'Content-Type: application/json' \
+        --data '{
+            "originalUrl": "https://example.com/very/long/url"
+        }'
         ```
       * **Response:**
         ```json
         {
-            "shortUrl": "http://localhost:3001/my-short-code",
-            "longUrl": "https://example.com/very/long/url",
-            "id": "uuid-of-short-link"
+            "shortUrl": "http://localhost:3005/my-short-code",
         }
         ```
 
@@ -134,17 +144,17 @@ The backend provides the following RESTful API endpoints:
 
 ## Database Schema
 
-The PostgreSQL database will contain a table similar to the following:
+The PostgreSQL database will contain:
 
-### `short_urls` Table
+### `url` Table
 
 | Column Name | Data Type | Constraints | Description              |
 | :---------- | :-------- | :---------- | :----------------------- |
-| `id`        | UUID      | PRIMARY KEY | Unique identifier        |
-| `long_url`  | TEXT      | NOT NULL    | The original long URL    |
-| `short_code`| VARCHAR(255)| UNIQUE, NOT NULL| The generated short code |
-| `clicks`    | INT       | DEFAULT 0   | Number of times the short link has been clicked |
-| `created_at`| TIMESTAMP | DEFAULT NOW() | Timestamp of creation |
+| `id`        | INTEGER      | PRIMARY KEY | Unique identifier        |
+| `original`  | CHARACTER VARYING      | UNIQUE, NOT NULL, INDEX   | The original long URL    |
+| `short`| CHARACTER VARYING      | UNIQUE, NOT NULL, INDEX   | The generated short code |
+| `createdAt`| TIMESTAMP | DEFAULT NOW() | Timestamp of creation |
+| `createdAt`| TIMESTAMP | DEFAULT NOW() | Timestamp of update |
 
 ## Project Structure
 

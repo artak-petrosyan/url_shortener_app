@@ -9,6 +9,9 @@ import {
 import { UrlRepo } from './repo/url.repo.interface';
 import { nanoid } from 'nanoid';
 import { ConfigService } from '@nestjs/config';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { UrlEntity } from './url.entity';
 
 @Injectable()
 export class UrlService {
@@ -20,13 +23,14 @@ export class UrlService {
   constructor(
     private configService: ConfigService,
     @Inject(UrlRepo) private urlRepo: UrlRepo,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {
     this.baseURL = configService.get<string>('App.baseUrl')!;
     this.shortUrlLength = configService.get<number>('App.shortUrlLength')!;
   }
 
   public async shortenUrl(originalUrl: string) {
-    this.logger.debug(`shorten :${originalUrl}`);
+    //this.logger.debug(`shorten :${originalUrl}`);
     //check if the originalUrl exists in DB
     let url = await this.urlRepo.findOriginalUrl(originalUrl);
 
@@ -54,13 +58,26 @@ export class UrlService {
   public async getOriginalUrl(short: string) {
     if (short.length != this.shortUrlLength)
       throw new BadRequestException('Invalig URL slug');
-    this.logger.debug('Find short :%s', short);
-    const url = await this.urlRepo.findShortUrl(short);
+    this.logger.debug('Find short:' + short);
+    const url = await this.getCachedUrl(short);
     if (url) {
-      this.logger.debug('Original :%s', url.original);
+      //this.logger.debug('Original :%s', url.original);
       return url.original;
     } else {
       throw new NotFoundException(`Short url:${short} not found`);
     }
+  }
+
+  private async getCachedUrl(urlCode: string): Promise<UrlEntity | null> {
+    const cachedUrl = await this.cacheManager.get<UrlEntity>(urlCode);
+    if (cachedUrl) {
+      this.logger.debug('Url is cached for code :' + urlCode);
+      return cachedUrl;
+    }
+    this.logger.debug('Loading Url for code :%' +  urlCode);
+    const url = await this.urlRepo.findShortUrl(urlCode);
+
+    await this.cacheManager.set(urlCode, url, 0);
+    return url;
   }
 }

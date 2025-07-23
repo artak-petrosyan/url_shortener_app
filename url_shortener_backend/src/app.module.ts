@@ -7,6 +7,7 @@ import { UrlModule } from './url/url.module';
 import { validate } from './config/validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from './url/url.entity';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -27,6 +28,11 @@ import { UrlEntity } from './url/url.entity';
         synchronize: configService.get<boolean>('Db.sync'),
       }),
       inject: [ConfigService],
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 5 * 60 * 1000,
+      max: 500,
     }),
     UrlModule,
   ],

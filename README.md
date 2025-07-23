@@ -25,6 +25,7 @@ This project is a full-stack URL shortener application built with a **NestJS** b
   * **TypeScript:** Superset of JavaScript that adds static typing.
   * **PostgreSQL:** Powerful, open-source object-relational database system.
   * **TypeORM:** ORM for interacting with the PostgreSQL database.
+  * **Keyv:** Keyv based NestJS cache-manager.
   * **dotenv:** For managing environment variables.
  
 ### Frontend

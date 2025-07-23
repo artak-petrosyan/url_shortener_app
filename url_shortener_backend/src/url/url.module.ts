@@ -7,9 +7,13 @@ import { UrlRepository } from './repo/url.repo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from './url.entity';
 import { ConfigModule } from '@nestjs/config';
+//import { KeyvCacheableMemory } from 'cacheable';
 
 @Module({
-  imports: [ConfigModule, TypeOrmModule.forFeature([UrlEntity])],
+  imports: [
+    ConfigModule,
+    TypeOrmModule.forFeature([UrlEntity]),
+  ],
   controllers: [UrlShortenerController, ShortUrlRedirectController],
   providers: [
     {

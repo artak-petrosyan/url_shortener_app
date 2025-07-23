@@ -109,6 +109,13 @@ docker-compose down -v
 
 The `-v` flag will also remove the `postgres_data` volume, effectively deleting your database data. If you want to preserve your data for future runs, omit `-v`.
 
+## Usage
+
+1.  Open your web browser and navigate to `http://localhost:3017`.
+2.  Enter a long URL into the provided input field.
+3.  Click the "Shorten" button.
+4.  The application will display the generated short URL.
+5.  You can then copy and use this short URL. When accessed, it will redirect to the original long URL.
 
 ## API Endpoints (Backend)
 
